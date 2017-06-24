@@ -1,2 +1,2 @@
 # BayesNets_Kate_Rob
-This file contains code for performing variable elimination and likelihood weighting with a Bayesian Network. Txt files to use in running the code is also included. There are also photos of the networks in Netica for visualization purposes.
+get_text_file_from_CARDIA.py contains code to retrieve the data from the given source and convert it into a .txt file that can then be put in a .csv and manipulated. ----- BeterBayesNets.py is code for performing variable elimination and likelihood weighting with a Bayesian Network. Text_Files contains networks to use in running the BetterBayesNets code. The network_pics folder contians photos of the networks in Netica for visualization purposes. 
