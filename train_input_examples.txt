@@ -1,0 +1,49 @@
+// the file name will be different for each dataset. Put the .txt file in Excel/numbers and find&replace all -1 with NA
+// delete the key column for all years. If year <= 7 (or 10?), delete cac. If year == 5, delete glu.
+
+z <- read.csv('C:/Users/Katie Bug/Desktop/ProHealth/no_na_year0_csv.csv', header = TRUE)
+
+zblack = data.frame(from = c("sex", "race", "age", "age", "sex", "race","smoker","smoker","smoker", "hbp", "hbp", "hbp","cac","cac","cac", "trig", "trig", "trig","heavy","heavy","heavy","moder","moder","moder", "edu", "edu", "edu", "ldl", "ldl", "ldl", "hdl", "hdl", "hdl", "chol", "chol", "chol", "glu", "glu", "glu", "dbp", "dbp", "dbp", "edu","edu","edu","bmi", "bmi", "bmi", "sbp", "sbp", "sbp"), to = c("race", "age", "sex"))
+
+z$sex <- cut(z$sex, c(-.1, 0, 1))
+z$race <- cut(z$race, c(-.1, 0, 1))
+z$smoker <- cut(z$smoker, c(-.1, 0, 1, 2))
+z$cac <- cut(z$cac, c(-.1, 0, 1))
+
+z$dbp <- cut(z$dbp, c(-.1, quantile(z$dbp, c(0, .20, .40,.60,.80,1), na.rm = TRUE)))
+z$moder <- cut(z$moder, c(-.1, quantile(z$moder, c(0, .20, .40,.60,.80,1), na.rm = TRUE)))
+z$heavy <- cut(z$heavy, c(-.1, quantile(z$heavy, c(0, .20, .40,.60,.80,1), na.rm = TRUE)))
+z$hbp<- cut(z$hbp, c(0, 1, 2, 8))
+
+z$sbp <- cut(z$sbp, c(-.1, quantile(z$sbp, c(.20, .40,.60,.80,1), na.rm = TRUE)))
+z$bmi <- cut(z$bmi, c(-.1, quantile(z$bmi, c(.20, .40,.60,.80,1), na.rm = TRUE)))
+z$age <- cut(z$age, c(-.1, quantile(z$age, c(.20, .40,.60,.80,1), na.rm = TRUE)))
+z$ldl <- cut(z$ldl, c(-.1, quantile(z$ldl, c(.20, .40,.60,.80,1), na.rm = TRUE)))
+z$hdl <- cut(z$hdl, c(-.1, quantile(z$hdl, c(.20, .40,.60,.80,1), na.rm = TRUE)))
+z$edu <- cut(z$edu, c(-.1, quantile(z$edu, c(.20, .40,.60,.80,1), na.rm = TRUE)))
+z$glu <- cut(z$glu, c(-.1, quantile(z$glu, c(.20, .40,.60,.80,1), na.rm = TRUE)))
+z$trig <- cut(z$trig, c(-.1, quantile(z$trig, c( .20, .40,.60,.80,1), na.rm = TRUE)))
+z$chol <- cut(z$chol, c(-.1, quantile(z$chol, c( .20, .40,.60,.80,1), na.rm = TRUE)))
+
+// your z.net will be using other algorithms, which you can find the syntax for online
+
+z.bic = hc(na.omit(z), blacklist = zblack)
+z.bic
+plot(z.bic)
+
+z.bde = hc(na.omit(z), blacklist = zblack, score = "bde")
+z.bde
+plot(z.bde)
+
+z.aic = hc(na.omit(z), blacklist = zblack, score = "aic")
+z.aic
+plot(z.aic)
+
+// IF year <= 7:
+// unless you delete cac from csv:
+z <- z[1:ncol(z)-1]
+zblack = data.frame(from = c("sex", "race", "age", "age", "sex", "race","smoker","smoker","smoker", "hbp", "hbp", "hbp","trig", "trig", "trig","heavy","heavy","heavy","moder","moder","moder", "edu", "edu", "edu", "ldl", "ldl", "ldl", "hdl", "hdl", "hdl", "chol", "chol", "chol", "glu", "glu", "glu", "dbp", "dbp", "dbp", "edu","edu","edu","bmi", "bmi", "bmi", "sbp", "sbp", "sbp"), to = c("race", "age", "sex"))
+
+// IF year == 5 do year <= 7 stuff and:
+// delete glu from the csv
+zblack = data.frame(from = c("sex", "race", "age", "age", "sex", "race","smoker","smoker","smoker", "hbp", "hbp", "hbp","trig", "trig", "trig","heavy","heavy","heavy","moder","moder","moder", "edu", "edu", "edu", "ldl", "ldl", "ldl", "hdl", "hdl", "hdl", "chol", "chol", "chol", "dbp", "dbp", "dbp", "edu","edu","edu","bmi", "bmi", "bmi", "sbp", "sbp", "sbp"), to = c("race", "age", "sex"))
